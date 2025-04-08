@@ -17,12 +17,14 @@ const apiConnector = axios.create({
 apiConnector.interceptors.request.use(
     (config) => {
         
-console.log("Hello guys");
+
         // Retrieve the token from cookies using js-cookie
         const token = Cookies.get('authToken');
+        //console.log(token)
        
         if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`; // Attach the token as a Bearer token
+            config.headers['authorization'] = `Bearer ${token}`; // Attach the token as a Bearer token
+           // console.log(config.headers['Authorization'].split(" ")[1].trim());
         }
         return config;
     },

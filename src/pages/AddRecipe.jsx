@@ -7,8 +7,6 @@ import apiConnector from '../component/apiConnector'; // Import your preconfigur
 
 const AddRecipe = () => {
   const [recipe, setRecipe] = useState({
-    authorName: '',
-    authorId: '',
     recipeName: '',
     ingredients: '',
     instructions: '',
@@ -16,7 +14,7 @@ const AddRecipe = () => {
     preparationTime: '',
     cookingTime: '',
     servings: '',
-    image: null,
+   // image: null,
     tags: '',
   });
   const [error, setError] = useState('');
@@ -29,10 +27,10 @@ const AddRecipe = () => {
     setRecipe((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  // Handle file input change
-  const handleImageChange = (e) => {
-    setRecipe((prevState) => ({ ...prevState, image: e.target.files[0] }));
-  };
+  // // Handle file input change
+  // const handleImageChange = (e) => {
+  //   setRecipe((prevState) => ({ ...prevState, image: e.target.files[0] }));
+  // };
 
   // Handle form submit
   const handleSubmit = async (e) => {
@@ -53,8 +51,6 @@ const AddRecipe = () => {
     setError('');
     // Create FormData to support file uploads
     const formData = new FormData();
-    formData.append('author.name', recipe.authorName);
-    formData.append('author.id', recipe.authorId);
     formData.append('recipeName', recipe.recipeName);
     formData.append('ingredients', recipe.ingredients.split(',').map((ingredient) => ingredient.trim())); // Parse ingredients as an array
     formData.append('instructions', recipe.instructions);
@@ -69,17 +65,12 @@ const AddRecipe = () => {
 
     try {
       // Make an API call to add the recipe
-      const response = await apiConnector.post('/addrecipe', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
+      const response = await apiConnector.post('/addrecipe', formData,{});
+      
+      console.log(response);
       // Provide success feedback and reset form fields
       setSuccess('Recipe added successfully!');
       setRecipe({
-        authorName: '',
-        authorId: '',
         recipeName: '',
         ingredients: '',
         instructions: '',
@@ -108,26 +99,6 @@ const AddRecipe = () => {
             {error && <Alert variant="danger">{error}</Alert>}
             {success && <Alert variant="success">{success}</Alert>}
             <Form onSubmit={handleSubmit}>
-              <Form.Group className="mb-3" controlId="formAuthorName">
-                <Form.Label>Author Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter author name"
-                  name="authorName"
-                  value={recipe.authorName}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formAuthorId">
-                <Form.Label>Author ID</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter author ID"
-                  name="authorId"
-                  value={recipe.authorId}
-                  onChange={handleChange}
-                />
-              </Form.Group>
               <Form.Group className="mb-3" controlId="formRecipeName">
                 <Form.Label>Recipe Name</Form.Label>
                 <Form.Control
@@ -200,7 +171,7 @@ const AddRecipe = () => {
                   onChange={handleChange}
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="formImage">
+              {/* <Form.Group className="mb-3" controlId="formImage">
                 <Form.Label>Image Upload</Form.Label>
                 <Form.Control type="file" name="image" onChange={handleImageChange} />
               </Form.Group>
@@ -213,7 +184,7 @@ const AddRecipe = () => {
                   value={recipe.tags}
                   onChange={handleChange}
                 />
-              </Form.Group>
+              </Form.Group> */}
               <div className="d-grid">
                 <Button variant="primary" type="submit">
                   Add Recipe
